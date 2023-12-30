@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../CSS/myCSS.css" />
+
+    <title>🕊️Zajl🕊️</title>
+  </head>
+  <body id="indexBody">
+    <h1 class="header">Welcome to <br />🕊️Zajl🕊️</h1>
+    <h3 class="center">
+      A messageing app <br />
+      <ins>free</ins> and <ins>secure</ins>
+    </h3>
+    <div id="signUpIn" class="row">
+      <div id="signUp" class="halfDimension">
+        <form>
+          <h4 style="margin-bottom: 5px" class="center">
+            First time? <br />
+            SignUp !
+          </h4>
+          <input
+            style="margin-bottom: 5px"
+            type="text"
+            name="firstName"
+            id="firstName"
+            class="form-control"
+            placeholder="First name"
+            required
+          />
+          <input
+            style="margin-bottom: 5px"
+            type="text"
+            name="lastName"
+            id="lastName"
+            class="form-control"
+            placeholder="Last name"
+            required
+          />
+
+          <input
+            style="margin-bottom: 5px"
+            type="email"
+            name="email"
+            id="email"
+            class="form-control"
+            placeholder="Your email"
+            required
+          />
+          <div style="position: relative">
+            <img
+              src="../icons/oeil.png"
+              alt=""
+              style="
+                width: 20px;
+                position: absolute;
+                left: 85%;
+                top: 17%;
+                border-radius: 50%;
+              "
+              onclick="showIndexPasswordSignUp()"
+            />
+
+            <input
+              style="margin-bottom: 5px"
+              type="password"
+              name="password"
+              id="password"
+              class="form-control"
+              placeholder="Your password"
+              required
+            />
+          </div>
+          <div style="position: relative">
+            <img
+              src="../icons/oeil.png"
+              alt=""
+              style="
+                width: 20px;
+                position: absolute;
+                left: 85%;
+                top: 35%;
+                border-radius: 50%;
+              "
+              onclick="showIndexPasswordConfirmSignUp()"
+            />
+            <input
+              style="margin-bottom: 5px"
+              type="password"
+              name="password2"
+              id="password2"
+              class="form-control"
+              placeholder="Confirm your password"
+              required
+            />
+          </div>
+          <input
+            style="margin-bottom: 5px"
+            type="button"
+            name="SignUpsubmit"
+            class="btn btn-primary btn-block"
+            value="Sign up"
+            onclick="signUp()"
+          />
+          <p
+            class="alert alert-danger"
+            id="signUpError"
+            style="display: none"
+          ></p>
+        </form>
+      </div>
+      <div id="signIn" class="halfDimension">
+        <form>
+          <h4 style="margin-bottom: 5px" class="center">
+            Already registered? <br />SignIn !
+          </h4>
+          <input
+            style="margin-bottom: 5px"
+            type="email"
+            name="email"
+            id="emailSignIn"
+            class="form-control"
+            placeholder="Your email"
+            required
+          />
+          <div style="position: relative">
+            <img
+              src="../icons/oeil.png"
+              alt=""
+              style="
+                width: 20px;
+                position: absolute;
+                left: 85%;
+                top: 30%;
+                border-radius: 50%;
+              "
+              onclick="showIndexPasswordSignIn()"
+            />
+            <input
+              style="margin-bottom: 5px"
+              type="password"
+              name="password"
+              id="passwordSignIn"
+              class="form-control"
+              placeholder="Your password"
+              required
+            />
+          </div>
+          <input
+            style="margin-bottom: 5px"
+            type="button"
+            name="SignUpsubmit"
+            class="btn btn-primary btn-block"
+            value="Sign in"
+            onclick="signIn()"
+          />
+          <p
+            class="alert alert-danger"
+            id="signInError"
+            style="display: none"
+          ></p>
+        </form>
+      </div>
+    </div>
+    <h1 id="or">OR</h1>
+  </body>
+  <script src="../JavaScript/js1.js"></script>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en" style="overflow: hidden">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../CSS/myCSS.css" />
+    <title>🕊️Zajl🕊️</title>
+  </head>
+  <body>
+    <input type="hidden" id="idConv" />
+    <input type="hidden" id="myProfilePhoto" />
+
+    <button
+      class="btn btn-danger"
+      style="position: fixed; top: 0px; right: 0px; z-index: 2"
+      onclick="returnToAdmin()"
+    >
+      x
+    </button>
+
+    <div style="position: fixed; top: 0px; left: 0px; z-index: 2" class="col">
+      <header id="convHeader"></header>
+      <div id="searchMsgBar">
+        <div class="row" style="gap: 4px">
+          <input
+            type="text "
+            id="searchMsgInput"
+            class="form-control"
+            placeholder="look for messages"
+          />
+          <button
+            id="searchMsgBtn"
+            class="btn btn-success"
+            onclick="searchMsg()"
+          >
+            Search
+          </button>
+          <button
+            id="cancelSearchMsgBtn"
+            class="btn btn-danger"
+            onclick="cancelSearchMsg()"
+            style="display: none"
+          >
+            cancel
+          </button>
+
+          <div id="ifSearch" class="col" style="gap: 2px">
+            <button
+              id="cancelSearchMsgBtn"
+              class="btn btn-primary"
+              onclick="searchUp()"
+              style="padding: 0px"
+            >
+              <img
+                src="../icons/airowUp.png"
+                alt=""
+                style="width: 35px; border-radius: 50%"
+              />
+            </button>
+            <button
+              id="cancelSearchMsgBtn"
+              class="btn btn-warning"
+              onclick="searchDown()"
+              style="padding: 0px"
+            >
+              <img
+                src="../icons/airowDown.png"
+                alt=""
+                style="width: 35px; border-radius: 50%"
+              />
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="alertSearchMsg" class="alert alert-danger" style="display: none">
+        No such message !
+      </div>
+    </div>
+    <div class="center" id="get20MessageIcon"></div>
+    <section id="messagesSection" class="col"></section>
+    <section id="msgInputSection" class="col">
+      <div id="downBtn" class="center" style="display: none">
+        <img
+          src="../icons/airowDown.png"
+          alt=""
+          id="airowDownImg"
+          onclick="scrollDown()"
+        />
+      </div>
+      <div id="refDiv" style="display: none"></div>
+      <input type="hidden" id="ref" value="0" />
+      <div class="textarea-container">
+        <textarea
+          id="textarea"
+          class="form-control"
+          placeholder="type somthing !"
+        ></textarea>
+        <button
+          class="btn btn-light"
+          id="fileBtn"
+          type="button"
+          onclick="document.getElementById('fileInput').click()"
+        >
+          <input
+            type="file"
+            style="display: none"
+            id="fileInput"
+            accept="image/* videos/*"
+          />
+          <img src="../icons/medias.png" alt="" style="width: 35px" />
+        </button>
+        <button
+          class="btn btn-light"
+          id="sendBtn"
+          type="button"
+          onclick="send()"
+        >
+          <img
+            src="../icons/airowRight.png"
+            alt=""
+            style="width: 35px; border-radius: 30%"
+          />
+        </button>
+      </div>
+      <div id="deleteOptions" class="popup"></div>
+
+      <script>
+        let textarea = document.getElementById("textarea");
+        textarea.addEventListener("input", () => {
+          if (textarea.scrollHeight < 69) {
+            textarea.style.minHeight = textarea.scrollHeight + "px";
+          } else {
+            textarea.style.minHeight = 44 + "px";
+            textarea.style.overflowY = "auto";
+          }
+        });
+      </script>
+    </section>
+  </body>
+  <script src="../JavaScript/js1.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      await fillNameAndPhoto();
+      await get20Messages();
+      scrollDown();
+      let myProfilePhoto = document.getElementById("myProfilePhoto");
+      myProfilePhoto.value = await getProfilePhoto();
+    });
+    let deleteOptions = document.getElementById("deleteOptions");
+    deleteOptions.addEventListener("click", async () => {
+      cancelDeleteMsg();
+    });
+    setInterval(async () => {
+      await getNewMessages();
+      await updateToDelete();
+    }, 3000);
+    let messagesSection = document.getElementById("messagesSection");
+    messagesSection.addEventListener("scroll", async () => {
+      if (!noMoreMessages()) {
+        if (messagesSection.scrollTop == 0) {
+          await get20Messages();
+          setTimeout(() => {
+            fillreloadIcon();
+          }, 10);
+          setTimeout(() => {
+            emptyreloadIcon();
+          }, 2000);
+        }
+      }
+      // console.log(messagesSection.scrollHeight - messagesSection.scrollTop);
+      if (messagesSection.scrollHeight - messagesSection.scrollTop <= 550) {
+        document.getElementById("downBtn").style.display = "none";
+      } else {
+        document.getElementById("downBtn").style.display = "block";
+      }
+    });
+
+    let searchMsgInput = document.getElementById("searchMsgInput");
+    searchMsgInput.addEventListener("focus", () => {
+      window.addEventListener("keydown", async (e) => {
+        if (e.key == "Enter") {
+          await searchMsg();
+        }
+      });
+    });
+
+    async function get20Messages() {
+      // console.log("getting  20 messages");
+      try {
+        //if there are no more messages we return
+        if (noMore) {
+          return;
+        }
+        let id_Conv = document.getElementById("idConv").value;
+        let section = document.getElementById("messagesSection");
+        let myid = await getSessionIdUser();
+
+        //20ofConv/:idConv/:index
+        let response = await fetch(
+          `http://localhost:3000/api/messages/20ofConv/${id_Conv}/${messagesLimit}`,
+          { method: "GET", headers: { "Content-Type": "application/json" } }
+        );
+        let result = await response.json();
+        // console.log(result);
+        if (result.length != 0) {
+          // idFirstMsg = result[0].id;
+          //if there are more messages we add 20 to the limit
+          messagesLimit += 20;
+
+          for (let msg of result) {
+            let media = msg.media;
+            let contenu = msg.contenu;
+            if (media == "" && contenu == "") {
+              continue;
+            }
+            let id = msg.id;
+            let id_User = msg.id_User;
+            let date = msg.date;
+            date = date.split(":");
+            let hour = date[0].slice(11, 16);
+            let minutes = date[1];
+            let photo = msg.photoUser;
+            let refMsgDiv = "";
+            if (msg.refMsg) {
+              let refMsg = msg.refMsg;
+              let refMsgContenu = refMsg.contenu;
+              let refMsgId = refMsg.id;
+              if (refMsgContenu.length > 20) {
+                refMsgContenu = refMsgContenu.substring(0, 20) + "...";
+              }
+              if (id_User == myid) {
+                refMsgDiv = `<div  class='myRefMsgDiv' onclick='scrollToId(${refMsgId})'>${refMsgContenu}</div>`;
+              } else {
+                refMsgDiv = `<div  class='otherRefMsgDiv' onclick='scrollToId(${refMsgId})'>${refMsgContenu}</div>`;
+              }
+            }
+
+            let myInner;
+            let otherInner;
+
+            //media existance case
+            let mediaDiv = "";
+
+            if (media != "") {
+              let splitFiles = media.split(",");
+              for (let file of splitFiles) {
+                let nature = fileNature(file);
+                // console.log(nature);
+                if (nature == "image") {
+                  mediaDiv += `<div style='margin-bottom:5px'><img src=${file} style="width: 100%;  border-radius: 10px" onclick='showImage("${file}")'></div>`;
+                } else {
+                  mediaDiv += `<div style='margin-bottom:5px'><video src=${file} style="width: 100%;  border-radius: 10px" controls></video></div>`;
+                }
+              }
+              if (contenu != "") {
+                contenu = ` <p style='background:pink;border-radius:10px;padding:3px;color:black'>${contenu}</p>`;
+              }
+            }
+            //           myInner =
+            //             `${refMsgDiv}
+            //     <div class='myMsgs ' id=${id} >
+            //       <div class='row'>
+            //     <div class='col myPhotoAndDate center'>
+            //     <div class='center' style='height:max-content'>
+            //     <img src=${photo} alt="user photo" style="width: 40px;  border-radius: 50%">
+            //     </div>
+            //     <div class='center' style='height:max-content'>${hour}:${minutes}</div>
+            //     </div>
+            //     <div class='myMsgContent' >
+            //     ${mediaDiv}
+            //     </div>
+            //     <div class='col' style='width:10%;heigjt:max-content'>
+            //     <div onclick='rep(${id},"${contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer;height:max-content'>
+            //     <img src='../icons/airowRef.png' class='myAirowRef'>
+            //     </div>
+            //     <div onclick='deleteMsg(${id})' style='cursor:pointer;height:max-content'>
+            //     <img src='../icons/trash.png' class='myTrash'>
+            //     </div>
+            //     </div>
+            //     </div>
+            //     </div>` + section.innerHTML;
+
+            //           otherInner =
+            //             `
+            //     ${refMsgDiv}
+            // <div class='otherMsgs' id=${id}>
+            //   <div class='row'>
+            // <div class='col otherPhotoAndDate center'>
+            // <div class='center'><img src=${msg.photoUser} alt="user photo" style="width: 40px;  border-radius: 50%"></div>
+            // <div class='center'>${hour}:${minutes}</div>
+            // </div>
+            // <div class='otherMsgContent'>
+            // ${mediaDiv}
+            // </div>
+            // <div class='col' style='width:10%'>
+            // <div onclick='rep(${id},"${contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer'><img src='../icons/airowRef.png' class='otherAirowRef'></div>
+            // <div onclick='deleteOthersMsg(${id})' style='cursor:pointer'><img src='../icons/trash.png' class='myTrash'></div>
+            // </div>
+            // </div>
+            // </div>
+            // ` + section.innerHTML;
+            //           //no media case
+            //         } else if (contenu != "" && media != "") {
+            //           myInner =
+            //             `${refMsgDiv}
+            //     <div class='myMsgs ' id=${id} >
+            //       <div class='row'>
+            //     <div class='col myPhotoAndDate center'>
+            //     <div class='center' style='height:max-content'>
+            //     <img src=${photo} alt="user photo" style="width: 40px;  border-radius: 50%">
+            //     </div>
+            //     <div class='center' style='height:max-content'>${hour}:${minutes}</div>
+            //     </div>
+            //     <div class='myMsgContent'>
+            //       ${contenu}
+            //     ${mediaDiv}
+            //     </div>
+            //     <div class='col' style='width:10%;heigjt:max-content'>
+            //     <div onclick='rep(${id},"${contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer;height:max-content'>
+            //     <img src='../icons/airowRef.png' class='myAirowRef'>
+            //     </div>
+            //     <div onclick='deleteMsg(${id})' style='cursor:pointer;height:max-content'>
+            //     <img src='../icons/trash.png' class='myTrash'>
+            //     </div>
+            //     </div>
+            //     </div>
+            //     </div>` + section.innerHTML;
+
+            //           otherInner =
+            //             `
+            //     ${refMsgDiv}
+            // <div class='otherMsgs' id=${id}>
+            //   <div class='row'>
+            // <div class='col otherPhotoAndDate center'>
+            // <div class='center'><img src=${msg.photoUser} alt="user photo" style="width: 40px;  border-radius: 50%"></div>
+            // <div class='center'>${hour}:${minutes}</div>
+            // </div>
+            // <div class='otherMsgContent'>
+            //   ${contenu}
+            //     ${mediaDiv}
+            //         </div>
+            // <div class='col' style='width:10%'>
+            // <div onclick='rep(${id},"${contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer'><img src='../icons/airowRef.png' class='otherAirowRef'></div>
+            // <div onclick='deleteOthersMsg(${id})' style='cursor:pointer'><img src='../icons/trash.png' class='myTrash'></div>
+            // </div>
+            // </div>
+            // </div>
+            // ` + section.innerHTML;
+            //         } else {
+            myInner =
+              `${refMsgDiv}
+        <div class='myMsgs ' id=${id} >
+          <div class='row'>
+        <div class='col myPhotoAndDate center'>
+        <div class='center' style='height:max-content'>
+        <img src=${photo} alt="user photo" style="width: 40px;  border-radius: 50%">
+        </div>
+        <div class='center' style='height:max-content'>${hour}:${minutes}</div>
+        </div>
+        <div class='myMsgContent'>
+          ${contenu}
+        ${mediaDiv}
+                </div>
+        <div class='col' style='width:10%;heigjt:max-content'>
+        <div onclick='rep(${id},"${msg.contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer;height:max-content'>
+        <img src='../icons/airowRef.png' class='myAirowRef'>
+        </div>
+        <div onclick='deleteMsg(${id})' style='cursor:pointer;height:max-content'>
+        <img src='../icons/trash.png' class='myTrash'>
+        </div>
+        </div>
+        </div>
+        </div>` + section.innerHTML;
+
+            otherInner =
+              `
+        ${refMsgDiv}
+    <div class='otherMsgs' id=${id}>
+      <div class='row'>
+    <div class='col otherPhotoAndDate center'>
+    <div class='center'><img src=${msg.photoUser} alt="user photo" style="width: 40px;  border-radius: 50%"></div>
+    <div class='center'>${hour}:${minutes}</div>
+    </div>
+    <div class='otherMsgContent'>
+      ${contenu} 
+        ${mediaDiv}
+            </div>
+    <div class='col' style='width:10%'>
+    <div onclick='rep(${id},"${msg.contenu}","${msg.photoUser}")' style='margin-bottom:3px;cursor:pointer'><img src='../icons/airowRef.png' class='otherAirowRef'></div>
+    <div onclick='deleteOthersMsg(${id})' style='cursor:pointer'><img src='../icons/trash.png' class='myTrash'></div>
+    </div>
+    </div>
+    </div>
+    ` + section.innerHTML;
+            // }
+            if (id_User == myid) {
+              //my messages
+              section.innerHTML = myInner;
+
+              //others messages
+            } else {
+              section.innerHTML = otherInner;
+            }
+          }
+          //scroll down to the last message
+          document
+            .getElementById(`${result[0].id}`)
+            .scrollIntoView({ behavior: "instant" });
+          //if there is no more messages we delete the button
+          if (result[0].noMore) {
+            let get20MessageIcon = document.getElementById("get20MessageIcon");
+            get20MessageIcon.innerHTML = "";
+            noMore = true;
+          }
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  </script>
+</html>

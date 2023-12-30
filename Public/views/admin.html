@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="../CSS/myCSS.css" />
+    <title>🕊️Zajl🕊️</title>
+  </head>
+  <body id="bodyAdmin">
+    <!--profile photo-->
+    <img id="profilePhoto" src="" alt="" onclick="settings()" />
+    <input id="idUser" type="hidden" />
+    <h4 id="headerAdmin">🕊️Zajl🕊️</h4>
+    <nav id="adminBar" class="row">
+      <div id="notifBar" onclick="notif()">notif</div>
+      <div id="nbrNotif"></div>
+      <div id="settingsBar" onclick="settings()">settings</div>
+
+      <div class="fixed" id="settings" style="color: var(--zajlBackColor)">
+        <button
+          class="btn btn-danger"
+          style="position: absolute; top: 2px; left: 2px"
+          onclick="cancelSettings()"
+        >
+          x
+        </button>
+        <div class="center" style="margin-top: 20px">
+          <input style="display: none" type="file" id="inputUpdatePhoto" />
+          <img
+            src=""
+            alt=""
+            id="photoProfileSettings"
+            style="border-radius: 50px; width: 100px; cursor: pointer"
+            onclick="document.getElementById('inputUpdatePhoto').click()"
+          />
+        </div>
+        <form>
+          <div class="form-group">
+            <label for="firstName">Your first name :</label>
+            <input
+              type="text"
+              id="firstName"
+              class="form-control"
+              placeholder="First name"
+              value="nnn"
+            />
+          </div>
+          <div class="form-group">
+            <label for="lastName">Your last name :</label>
+            <input
+              type="text"
+              id="lastName"
+              class="form-control"
+              placeholder="Last name"
+            />
+          </div>
+          <div class="form-group">
+            <label for="email">Your mail adress :</label>
+            <input
+              class="form-control"
+              type="email"
+              id="email"
+              placeholder="Email adress"
+            />
+          </div>
+          <div class="form-group">
+            <label for="password"
+              >Your password :
+
+              <img
+                src="../icons/oeil.png"
+                alt=""
+                style="
+                  width: 30px;
+                  position: absolute;
+                  top: 415px;
+                  right: 10px;
+                  border-radius: 50%;
+                "
+                onclick="showPassword()"
+              />
+            </label>
+            <input
+              class="form-control"
+              type="password"
+              id="password"
+              placeholder="Password"
+            />
+          </div>
+          <div class="form-group">
+            <label for="passwordConfirm"
+              >Confirm your password :
+
+              <img
+                src="../icons/oeil.png"
+                alt=""
+                style="
+                  width: 30px;
+                  position: absolute;
+                  right: 10px;
+                  top: 500px;
+                  border-radius: 50%;
+                "
+                onclick="showPasswordConfirm()"
+              />
+            </label>
+            <input
+              class="form-control"
+              type="password"
+              id="passwordConfirm"
+              placeholder="repeat your password"
+            />
+          </div>
+        </form>
+        <div class="center">
+          <button class="btn btn-success" onclick="updateProfile()">
+            Update
+          </button>
+          <div
+            id="updateProfileMsg"
+            style="display: none; margin-top: 10px"
+          ></div>
+        </div>
+
+        <br />
+        <button
+          class="btn btn-warning"
+          onclick="logOut()"
+          style="border-radius: 50%; position: absolute; top: 5px; right: 2px"
+        >
+          <img
+            src="../icons/logout.png"
+            alt=""
+            style="border-radius: 50%; width: 50px"
+          />
+        </button>
+        <div
+          class="myContainer center"
+          id="deleteUserCadre"
+          style="background: black"
+        >
+          <button class="btn btn-danger" onclick="deleteUser()">
+            Delete the account
+          </button>
+        </div>
+      </div>
+    </nav>
+    <div id="search" class="row">
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Look for a friend"
+        class="form-control"
+        style="width: 70%; margin-left: 15px; margin-right: 5px"
+      />
+      <button id="searchButton" class="btn btn-success" onclick="searchConv()">
+        Search
+      </button>
+
+      <div id="result" class="fixed">
+        <button
+          class="btn btn-danger"
+          id="cancelSearchBtn"
+          onclick="cancelSearch()"
+        >
+          x
+        </button>
+
+        <div id="friendsResult" class="col">
+          <h4><ins>Friends</ins></h4>
+          <hr />
+        </div>
+        <div id="convResult" class="col">
+          <h4>
+            <ins>Conversations</ins>
+          </h4>
+          <hr />
+        </div>
+      </div>
+    </div>
+    <div id="notif" class="fixed">
+      <button
+        class="btn btn-danger"
+        style="position: fixed; top: 0px; left: 0px"
+        onclick="cancelNotif()"
+      >
+        x
+      </button>
+      <div id="notifContent" class="row"></div>
+    </div>
+    <section id="convSection" class="col"></section>
+    <div
+      id="cadreOptionsConv"
+      class="fixed"
+      onclick="cancelOptionsConv()"
+    ></div>
+    <div id="optionsConv" class="col center"></div>
+  </body>
+  <script src="../JavaScript/js1.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      displayMyConvs();
+      displayNotif();
+      fillProfilePhoto();
+      if ((await getSessionIdUser()) == null) {
+        //the user is supposed loged out so redirect him to the login page
+        window.location.href = "http://localhost:3000/";
+      }
+    });
+    setInterval(() => {
+      displayNotif();
+    }, 4000);
+  </script>
+</html>

@@ -1,0 +1,531 @@
+*{
+    --dc:black;
+    --lc:white;
+    --pc:blue;
+    --ic:red;
+    --zajlBackColor:white;
+    --zajlFrontColor:blue;
+    --myMsgColor:blue;
+    --otherMsgColor:rgb(27, 19, 83);
+}
+html{
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+#adminBar{
+    margin-left: 10px;
+    gap: 3px;
+}
+#notifBar{
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    border-radius: 10px;
+    margin: 1px;
+    padding: 5px;
+    min-width: 20%;
+    text-align: center;
+    cursor: pointer;
+} 
+#notifContent{
+    padding-top: 30px;
+    margin: 10px;
+    color: var(--zajlBackColor);
+}
+#settingsBar{
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    border-radius: 10px;
+    margin: 1px;
+    padding: 5px;
+    min-width: 20%;
+    text-align: center; 
+    cursor: pointer;
+}
+#indexBody{
+    color: var(--dc);
+    background-color: var(--lc);
+}
+#signUpIn{
+    margin: 5% 5% 0% 5%;
+    background-color: var(--pc);
+    height: 450px;
+    border-radius: 10px;
+
+}
+#signUp{
+    background-color: yellow;
+    padding: 10px;
+    border-radius: 10px 0px 0px 10px;
+}
+#signIn{
+    background-color: green;
+    padding: 10px;
+    border-radius: 0px 10px 10px 0px;
+
+}
+#or{
+    position: relative;
+    bottom: 45px;
+    z-index: 3;
+    width: 100%;
+    text-align: center;
+}
+#headerAdmin{
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    padding: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+#search{
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    padding: 2px;
+    margin-top: 3px;
+    text-align: center;
+}
+#convSection{
+    background-color: var(--zajlBackColor);
+    padding: 2px;
+}
+#bodyAdmin{
+    background-color: var(--zajlBackColor);
+    color: var(--zajlFrontColor);
+    
+}
+
+#friendsResult{
+    height: 100%;
+    width: 50%;
+    background-color: var(--zajlBackColor);
+    color: var(--zajlFrontColor);
+    text-align: center;
+    padding:30px 5px 5px 5px;
+
+}
+#convResult{
+    height: 100%;
+    width: 50%;
+    background-color: var(--zajlFrontColor);
+    text-align: center;
+    padding-top: 30px;
+    padding-left: 0%;
+
+}
+
+#cancelSearchBtn{
+    z-index: 3;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: max-content;
+    height: max-content;
+}
+#convHeader{
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    padding: 20px;
+    margin-left: 0px;
+    margin-bottom: 5px;
+    text-align: center;
+    gap: 10px;
+    
+    width: 100%;
+}
+#cadreOptionsConv{
+    display: none;
+    background-color: rgba(9, 9, 9, 0.5);
+    z-index: 9;
+}
+#optionsConv{
+    gap: 10px;
+    display: none;
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    top: 25%;
+    left: 25%;
+    border-radius: 10px;
+    z-index: 10;
+    padding: 10px;
+}
+#nbrNotif{
+    display: none;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    position: relative;
+    right: 18px;
+    bottom: 0.6px;
+    z-index: 1;
+    font-size: 11px;
+    width: 2em;
+    height: 2em;
+    text-align: center;
+}
+#searchMsgBar{
+    padding-left: 4px;
+    width: 100%;
+    height: max-content;
+    z-index: 10;
+    background-color: var(--zajlBackColor);
+}
+#searchMsgInput{
+    
+    width: 45%;
+    margin-right: 5px;
+}
+#ifSearch{
+    display: none;
+    position: fixed;
+    right: 0px;
+    top: 145px;
+    width: 35px;
+
+    height: max-content;
+}
+#nameConv{
+    width: 80%;
+    text-align: center;
+    padding: 10px;
+   
+}
+#profilePhoto{
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    width:50px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+#noNotif{
+    background-color:var(--zajlBackColor) ;
+    color: var(--zajlFrontColor);
+    padding: 2px;
+    margin-top: 40%;
+    text-align: center;
+    padding-left: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+#textarea{
+    width: 75%; 
+    border-radius: 10px;
+     height: 36px
+  }
+  #sendBtn{
+    margin-left: 5px;
+    max-height: 37px;
+    padding: 0px;
+    height: max-content;
+  }#fileBtn{
+    margin-left: 3px;
+    padding: 0px;
+    height: max-content;
+  }
+  #airowDownImg{
+    border-radius: 50%;
+    border:3px solid red;
+    width: 30px;
+  }
+
+  #msgInputSection{
+    position: fixed;
+    bottom: 3px;
+    left: 0;
+    height: max-content;
+  }
+  #messagesSection{
+    overflow-y: scroll;
+    /* scrollbar-width: none;
+    -ms-overflow-style: none; */
+    scrollbar-color: blue;
+    height: 525px;
+    margin-bottom: 0px;
+    margin-top: 5px;
+    gap: 5px;
+  }
+  #deleteOptions{
+    padding-top: 70%;
+  }
+  #get20MessageIcon{
+    position: static;
+    
+    width: 100%;
+    border-radius: 50%;
+    margin-top: 150px;
+  }
+  #reloadMessageImg{
+    border-radius: 50%;
+    width: 20px;
+    cursor: pointer;
+}
+.addreq{
+    background-color: var(--zajlBackColor);
+    color: var(--zajlFrontColor);
+    padding: 2px;
+    margin-top: 3px;
+    text-align: center;
+    padding-left: 20px;
+    border-radius: 10px;
+    width: 100%;
+}
+.fixed{
+    display: none;
+    position: fixed;
+    overflow-y: scroll;
+    height: 100%;
+    width: 100%;
+    background-color: var(--zajlFrontColor);
+    top: 0px;
+    z-index: 2;
+    left: 0px;
+}
+.center{
+    text-align: center;
+}
+.fullDimension{
+    width: 100%;
+    height: 100%;
+}
+.halfDimension{
+    width: 50%;
+    height: 100%;
+}
+.header{
+text-align: center;
+background-color:var(--pc) ;
+color: var(--lc);
+padding: 20px;
+}
+
+.row{
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+    flex-wrap: wrap;
+    margin: 0px;
+    height: max-content;
+}
+.col{
+    display: flex;
+    flex-direction: column; 
+    overflow: hidden;  
+    padding: 0px;
+}
+.conv{
+    background-color: var(--pc);
+    color: var(--lc);
+    padding: 5px;
+    padding-left: 20px;
+    border-radius: 10px;
+    margin: 10px;
+    height: max-content;
+    cursor: pointer;
+}
+.convLink{
+    width: 95%;
+    margin-right: 10px;
+}
+.convInfoSearched{
+    width:60%;
+    text-align: center;
+    overflow: hidden;
+    margin-bottom: 3px;
+}
+.convLinkSearched{
+    width: 90%;
+    margin-left: 0px;
+    cursor: pointer;
+}
+.convInfo{
+    width:77%;
+    text-align: center;
+    overflow: hidden;
+    padding-left: 3%;
+}
+.options{
+    margin-left: 10px;
+    width: 9%;
+    height: 100%;
+    border-radius: 50%;
+    width: max-content;
+    font-size: larger;
+    cursor: pointer;
+}
+.optionsSearched{
+    height: max-content;
+    font-size: larger;
+    padding-bottom: 3px;
+    cursor: pointer;
+}
+.convName{
+    width: 100%;
+}
+.lastMessage{
+    margin-bottom: 3px;
+    width: 100%;
+}
+.friend{
+    border: 1px solid var(--pc);
+    margin-bottom: 8px;
+}
+.convSearched{
+    background-color: var(--zajlBackColor);
+    color: var(--zajlFrontColor);
+    margin-left: 0px;
+    height: max-content;
+    margin: 3px;
+    border-radius: 10px;
+    padding: 5px 0px 7px 0px;
+    cursor: pointer;
+}
+.myContainer{
+    width: 95%;
+    height: max-content;
+    overflow: hidden;
+    padding: 10px;
+    margin: 2.5%;
+    color: var(--zajlBackColor);
+    background-color: var(--zajlBackColor);
+    border-radius: 10px;
+}
+.textarea-container {
+    /* position: fixed;
+    bottom: 3px;
+    left: 0; */
+    width: 100%;
+    height: max-content;
+    background-color: var(--zajlFrontColor);
+    color: var(--zajlBackColor);
+    border-radius: 10px;
+    padding: 5px;
+    display: flex;
+    flex-direction: row;
+  }
+  
+  textarea {
+    resize: none; /* Prevent textarea resizing by the user */
+    overflow-y: hidden; /* Hide vertical scrollbar */
+    min-height: 2em; /* Set minimum height to two rows */
+    width: 100%;
+    padding: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: min-height 0.2s; /* Add smooth transition when expanding */
+  }
+  
+  /* Style when textarea has focus */
+  textarea:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+.myMsgs{
+    background-color: var(--zajlFrontColor);
+    direction: rtl;
+    margin:0px 5px 0px 20%;
+    color: var(--zajlBackColor);
+    border-radius: 10px;
+    padding: 10px;
+    height: max-content;
+    min-height:max-content;
+  }
+  .myPhotoAndDate{
+    direction: rtl;
+    width: 45px;
+    height: max-content;
+  }
+  .myMsgContent{
+    min-width: 157.21px;
+    width: 63%;
+    height: max-content;
+    padding: 5px;
+    margin-right: 5px;
+  }
+  .myAirowRef{
+    width: 20px;
+    border-radius: 50%;
+    rotate: 180deg;
+    height: max-content;
+
+  }
+  .myTrash{
+    width: 20px;
+    border-radius: 10%;
+    height: max-content;
+
+  }
+
+  .otherMsgs{
+    direction: ltr;
+    background-color: var(--otherMsgColor);
+    color: white;
+    margin:0px 20% 5px 5px;
+    border-radius: 10px;
+    min-height: max-content;
+    padding: 10px;
+      }
+      .otherPhotoAndDate{
+        direction: ltr;
+        width: 40px;
+        max-height: 66px;
+
+      }
+      .otherMsgContent{
+        width: 65%;
+        padding: 5px;
+      }
+      .otherAirowRef{
+        width: 20px;
+        border-radius: 50%;
+      }
+      .otherTrash{
+        width: 20px;
+        border-radius: 10%;
+      }
+      .popup{
+        position: fixed;
+        top: 0%;
+        left: 0%;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(87, 86, 86, 0.5);
+        color: var(--zajlBackColor);
+        z-index: 3;
+        display: none;
+        border-radius: 10px;
+        padding: 25%;
+        padding-top: 40%;
+      }
+      .myRefMsgDiv{
+        cursor: pointer;
+        width: 40%;
+        height: max-content;
+        max-height: 3em;
+        background-color:     rgba(9, 9, 9, 0.5);
+        color: var(--zajlBackColor);
+        border-radius: 10px;
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        margin-left: 55%;
+        margin-right: 5px;
+      }
+      .otherRefMsgDiv{
+        cursor: pointer;
+        width: 40%;
+        height: max-content;
+        max-height: 3em;
+        background-color:     rgba(9, 9, 9, 0.5);
+        color: var(--zajlBackColor);
+        border-radius: 10px;
+        padding: 5px;
+        display: flex;
+        flex-direction: row;
+        margin-right: 55%;
+        margin-left: 5px;
+      }
